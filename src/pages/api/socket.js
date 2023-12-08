@@ -1,8 +1,4 @@
 import { Server } from 'socket.io'
-const game= {
-    jugadorActual,
-    letrasRestantes,
-}
 
 const SocketHandler = async (req, res) => {
     if (!res.socket.server.io) {
