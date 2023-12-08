@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import classes from '@/styles/Home.module.css'
+
 
 const Home = () => {
   const [msg, setMsg] = useState('');
@@ -27,7 +29,7 @@ const Home = () => {
   }
 
 
-  return <div>
+  return <div className={classes.main}>
     <input onChange={onInputChange}></input>
     <br></br>
     {msg}

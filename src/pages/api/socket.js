@@ -6,12 +6,10 @@ const SocketHandler = async (req, res) => {
         res.socket.server.io = io;
         io.on('connection', (socket) => {
             console.log('cliente conectado: ' + socket?.id)
-            socket.on('play', (msg) => {
-                io.emit('updateGame', game);
+            socket.on('picha', (msg) => {
+                io.emit('3726', msg);
             });
-            socket.on('start', (msg) => {
-                io.emit('updateGame', game);
-            });
+           
         });
     }
     res.end();
