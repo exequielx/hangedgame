@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import classes from '@/styles/Home.module.css'
 import { Game } from './game/Game';
 
 
@@ -23,24 +22,11 @@ const Home = () => {
     };
     socketInitializer();
   }, [])
-  /*
-  <div >
-      {<input onChange={onInputChange}></input>
-
-      <br></br>
-{msg}}
-      
-</div>  
-  */
-
 
   const onInputChange = (event) => {
     socketIo.emit('picha', event.target.value);
   }
-
-
-  return <Game/>
-    
+  return <Game/> 
 };
 
 export default Home;

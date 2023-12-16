@@ -6,13 +6,13 @@ const keyboardLayout = [
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
   ];
 
-export const Keyboard = ({setMove}) => {
+export const Keyboard = ({setplayerMove}) => {
   return (
     <div className='key-board'>
         {keyboardLayout.map((colection, letterIndex) => (
           <div key={letterIndex} className='row-key-board' >
-            {colection.map((elemento, colIndex) => (
-              <Keys key={colIndex} setMove={setMove} className="letter">{elemento}</Keys>
+            {colection.map((element, colIndex) => (
+              <Keys key={colIndex} setplayerMove={setplayerMove} className="letter">{element}</Keys>
             ))}
           </div>
         ))}

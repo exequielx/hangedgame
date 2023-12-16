@@ -1,21 +1,21 @@
 import React,{useEffect, useState} from 'react'
-import { Square } from './Square'
+import { Cell} from './Cell'
 
 const word='NARANJA'
 
 
-export const Board = ({move}) => {
+export const Board = ({playerMove}) => {
   const text= word
   const [board, setBoard] = useState(() =>
   Array(text.length).fill(null));
 
    useEffect(() => {
-    if (text.includes(move)) {
+    if (text.includes(playerMove)) {
       setBoard((prevBoard) => {
         const newBoard = [...prevBoard];
         for (let i = 0; i < text.length; i++) {
-          if (text[i] === move) {
-            newBoard[i] = move;
+          if (text[i] === playerMove) {
+            newBoard[i] = playerMove;
           }
         }
         return newBoard;
@@ -26,12 +26,12 @@ export const Board = ({move}) => {
     }
       
     
-  }, [move, text]);
+  }, [playerMove, text]);
    
     return (
         <div className='row-text'>
           {board.map((element, colIndex) => (
-            <Square key={colIndex}>{element}</Square>
+            <Cell key={colIndex}>{element}</Cell>
           ))}
         </div>
       );

@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const Keys = ({ setMove, children }) => {
+export const Keys = ({ setplayerMove, children }) => {
     const handleClick = () => {
-      setMove(children);
+      setplayerMove(children);
     };
   
     return (

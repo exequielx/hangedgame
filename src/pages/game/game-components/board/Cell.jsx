@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Square = ({children}) => {
+export const Cell = ({children}) => {
   return (
     <div className='letter'>
         {children}
