@@ -1,11 +1,22 @@
-.letter{
-    width: 50px;
-    height: 50px;
-    border: 2px solid #eee;
-    border-radius: 5px;
-    font-size: 30px;
-    margin: 3px;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-  }
+.letter {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #eee;
+  border-radius: 5px;
+  font-size: 30px;
+  margin: 3px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.letter:hover {
+  color: orangered;
+  border-color: orangered;
+}
+
+.clicked {
+  width: 53px;
+  height: 53px;
+}
