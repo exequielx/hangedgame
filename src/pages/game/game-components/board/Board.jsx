@@ -1,38 +1,35 @@
-import React,{useEffect, useState} from 'react'
-import { Cell} from './Cell'
+import React, { useEffect, useState } from 'react';
+import classes from '@/styles/Board.module.css';
+import { Cell } from './Cell';
 
-const word='NARANJA'
 
+export const Board = ({ chooseLetter, socketIo,word }) => {
+  
+  const [board, setBoard] = useState(Array(7).fill('_'));
 
-export const Board = ({playerMove}) => {
-  const text= word
-  const [board, setBoard] = useState(() =>
-  Array(text.length).fill(null));
+  useEffect(() => {
+    console.log(' before emit:');
+  
+    if (socketIo) {
 
-   useEffect(() => {
-    if (text.includes(playerMove)) {
-      setBoard((prevBoard) => {
-        const newBoard = [...prevBoard];
-        for (let i = 0; i < text.length; i++) {
-          if (text[i] === playerMove) {
-            newBoard[i] = playerMove;
-          }
-        }
-        return newBoard;
+      socketIo.on('initalBoard', (board)=>{
+        setBoard(board)
       });
-    }else{
-      console.log("erraste!");
-
+      socketIo.emit('stateGame', chooseLetter);
+  
+      socketIo.on('newStateGame', (newBoard) => {
+        console.log('Received newStateGame:', newBoard);
+        setBoard(newBoard);
+      });
     }
-      
-    
-  }, [playerMove, text]);
-   
-    return (
-        <div className='row-text'>
-          {board.map((element, colIndex) => (
-            <Cell key={colIndex}>{element}</Cell>
-          ))}
-        </div>
-      );
-}
+  }, [chooseLetter, socketIo]);
+
+  return (
+    <div className={classes.rowText}>
+      {board?.map((element, colIndex) => (
+        <Cell key={colIndex}>{element}</Cell>
+      ))}
+    </div>
+  );
+};
+

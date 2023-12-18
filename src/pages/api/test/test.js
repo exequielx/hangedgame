@@ -15,3 +15,21 @@ export const players = [
       score: 200
     }
   ];
+
+  const fetchWord = async () => {
+    const response = await fetch('https://random-word-api.herokuapp.com/word?lang=es');
+    const word = await response.json();
+    return word[0]
+  };
+  
+
+  const fetchAndInitialize = async () => {
+    const word = await fetchWord();
+    const upperCaseWord = word.toUpperCase();
+    const selectedWord = upperCaseWord.split("");
+    const board = Array(selectedWord.length).fill('_');
+    return { selectedWord, board };
+  };
+  
+  export const { selectedWord, board } = await fetchAndInitialize();
+  
