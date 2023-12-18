@@ -7,22 +7,27 @@ export const Game = ({ socketIo }) => {
   const [chooseLetter, setChooseLetter] = useState('');
   const [players, setPlayers] = useState([]);
   const [word, setWord]=useState('Naranja')
+  const [board, setBoard] = useState(Array(7).fill('_'));
+
 
   useEffect(() => {
     if (socketIo) {
+      //chooseLetter
+      socketIo.emit('stateGame', chooseLetter);
 
-      socketIo.on('players', (_player) => {
-        setPlayers(_player);
-      });
-      socketIo.on('word', (selectedWord) => {
-        setWord(selectedWord);
-      });
+      socketIo.on('newStateGame', (data) => {
+        console.log('Received newStateGame:', );
+        setBoard(data[0]);
+        setPlayers(data[1]);
+      }); 
     }
-  }, [socketIo]); 
+  }, [chooseLetter, socketIo]); 
+
+  
 
   return (
     <div>
-      <Board chooseLetter={chooseLetter} socketIo={socketIo} word = {word} />
+      <Board chooseLetter={chooseLetter} socketIo={socketIo} board = {board} />
       <Keyboard setChooseLetter={setChooseLetter}  />
       <PlayersList players={players} />
     </div>

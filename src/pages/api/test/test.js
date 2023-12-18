@@ -21,11 +21,16 @@ export const players = [
     const word = await response.json();
     return word[0]
   };
+  const removeAccents = (text)=> {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  
+  
   
 
   const fetchAndInitialize = async () => {
     const word = await fetchWord();
-    const upperCaseWord = word.toUpperCase();
+    const upperCaseWord = removeAccents(word.toUpperCase());
     const selectedWord = upperCaseWord.split("");
     const board = Array(selectedWord.length).fill('_');
     return { selectedWord, board };

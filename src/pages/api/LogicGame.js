@@ -10,7 +10,10 @@ export const verifyBoardState = (chooseLetter, selectedWord, board)=>{
         }
       }
       return newBoard;
+  }else{
+    return board
   }
+
 }
 
 
