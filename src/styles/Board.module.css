@@ -1,0 +1,6 @@
+.rowText{
+    display: flex;
+    margin: 30px;
+    align-items: center;
+    justify-content: center;
+  }

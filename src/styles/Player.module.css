@@ -1,0 +1,11 @@
+.player{
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: crimson;
+  }
+  
+  .ahorcado{
+    background-image: url('/images/ahorcado.png');
+  
+  }
