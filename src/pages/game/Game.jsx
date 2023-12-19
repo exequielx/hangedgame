@@ -7,6 +7,7 @@ export const Game = ({ socketIo }) => {
   const [players, setPlayers] = useState([]);
   const [word, setWord] = useState();
   const [winner, setWinner] = useState();
+  const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export const Game = ({ socketIo }) => {
       setWinner(data.winner);
       setWord(data.word);
       setPlayers(data.players);
+      setTurn(data.turn);
     });
   }, [socketIo]);
 
@@ -46,9 +48,9 @@ export const Game = ({ socketIo }) => {
   return (
     <div>
       <Board word={word} />
-      {winner && <div>yeeeah ganaste!!!</div>}
+      {winner && <div>yeeeah ganó {turn}!!!</div>}
       {!winner && <Keyboard onChange={onChangeLetter} />}
-      <Players data={players} />
+      <Players data={players} turn={turn} />
     </div>
   );
 };

@@ -9,14 +9,11 @@
   align-content: center;
   justify-content: center;
   cursor: pointer;
+  transition: transform .2s;
 }
 
 .letter:hover {
   color: orangered;
   border-color: orangered;
-}
-
-.clicked {
-  width: 53px;
-  height: 53px;
+  transform: scale(1.1);
 }

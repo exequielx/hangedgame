@@ -1,12 +1,16 @@
-.player{
-    margin: 15px;
-    display: flex;
-    flex-direction: column;
-    background-color: crimson;
-    width: 100px;
-    height: 100px;
-  }
+.player {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  background-color: crimson;
+  width: 100px;
+  height: 100px;
+}
 
-  .name {
-    font-size: 7px;
-  }
+.actual {
+  background-color: green;
+}
+
+.name {
+  font-size: 7px;
+}

@@ -18,12 +18,12 @@
 
 
 body {
+  user-select: none;
   margin: 0;
   display: flex;
   min-height: 100vh;
   align-content: center;
   justify-content: center;
-  padding: 20px;
 }
 
 
