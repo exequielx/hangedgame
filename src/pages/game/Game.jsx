@@ -39,7 +39,7 @@ export const Game = ({ socketIo }) => {
   if (!word) {
     return (
       <div>
-        <button onClick={onStart}>start</button>
+        <button style={{ padding: 10 }} onClick={onStart}>Start Game</button>
         <Players data={players} />
       </div>
     );

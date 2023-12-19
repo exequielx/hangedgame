@@ -40,15 +40,18 @@ const startGame = async () => {
 
 const play = (letter) => {
   data.word = finalWord.split('').map((c, i) => ((c === letter || (data.word[i] !== '-')) ? c : '-')).join('');
-  checkWinner();
-  setNextTurn();
+  if(!checkWinner()) {
+    setNextTurn();
+  }
   updateClients();
 }
 
 const checkWinner = () => {
   if (data.word.indexOf('-') === -1) {
     data.winner = data.turn;
+    return true;
   }
+  return false;
 }
 
 const setNextTurn = () => {
