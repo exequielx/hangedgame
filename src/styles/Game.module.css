@@ -1,0 +1,50 @@
+.centerbox{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  
+  .loader {
+      width: 50px;
+      aspect-ratio: 1;
+      color: #fff;
+      border: 2px solid;
+      display: grid;
+      box-sizing: border-box;
+      animation: l1 4s infinite linear;
+    }
+    .loader::before,
+    .loader::after {
+      content: "";
+      grid-area: 1/1;
+      margin: auto;
+      width: 70.7%;
+      aspect-ratio: 1;
+      border: 2px solid;
+      box-sizing: content-box;
+      animation: inherit;
+    }
+    .loader::after {
+      width: 50%;
+      aspect-ratio: 1;
+      border: 2px solid;
+      animation-duration: 2s;
+    }
+  
+    .WinnerBox{
+      border: #fff;
+      border-style: solid;
+      border-radius: 7px;
+      text-align: center;
+      width: 250px;
+    }
+  
+  
+  
+    @keyframes l1{
+      100% {transform:rotate(1turn)}
+    }
