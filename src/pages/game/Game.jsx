@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Board from './components/board/Board';
 import Keyboard from './components/keyboard/Keyboard';
 import Players from './components/players/Players';
-import styles from '@/styles/Game.module.css'
 
 export const Game = ({ socketIo }) => {
   const [players, setPlayers] = useState([]);
@@ -22,14 +21,10 @@ export const Game = ({ socketIo }) => {
   }, [socketIo]);
 
   const onChangeLetter = (letter) => {
-    if(socketIo.id == turn){
-      socketIo.emit('play', letter);
-    } 
-      
+    socketIo.emit('play', letter);
   }
 
   const onStart = () => {
-    setWinner(undefined)
     setIsStarting(true);
     socketIo.emit('start');
     setTimeout(() => {
@@ -37,13 +32,13 @@ export const Game = ({ socketIo }) => {
     }, 3000);
   }
 
-  if (!socketIo) { return <div className={styles.loader} >  </div>; }
+  if (!socketIo) { return 'loading...'; }
 
-  if (isStarting) { return <div className={styles.loader}   >   </div> }
+  if (isStarting) { return 'starting game...'; }
 
   if (!word) {
     return (
-      <div className={styles.centerbox}>
+      <div>
         <button style={{ padding: 10 }} onClick={onStart}>Start Game</button>
         <Players data={players} />
       </div>
@@ -51,14 +46,9 @@ export const Game = ({ socketIo }) => {
   }
 
   return (
-    <div className={styles.centerbox}>
+    <div>
       <Board word={word} />
-      {winner &&
-                <div className={styles.WinnerBox}>
-                   yeeeah ganó {turn}!!!
-                  <button onClick={onStart}>volver a jugar</button>
-
-                </div>}
+      {winner && <div>yeeeah ganó {turn}!!!</div>}
       {!winner && <Keyboard onChange={onChangeLetter} />}
       <Players data={players} turn={turn} />
     </div>

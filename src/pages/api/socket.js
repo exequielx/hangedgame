@@ -35,7 +35,6 @@ const SocketHandler = async (req, res) => {
 const startGame = async () => {
   await generateRandomWord();
   generateRandomPlayerTurn();
-  data.winner=null;
   updateClients();
 }
 
