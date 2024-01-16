@@ -1,0 +1,23 @@
+pantallas de inicio de players (nombre color )
+
+configuracion de partida ( cantidad de  players, numero de rondas, vidas, cantidad de letras, rango, tiempo de turno   )
+
+modificar quien juega 
+
+timer cuando player juega
+
+pantalla victoria 
+
+mansaje derrota
+
+estadisticas
+
+
+
+
+cantidad letras 
+?length
+Set length of requested words. This will only return words that contain x amount of letters.
+
+Example:
+https://random-word-api.herokuapp.com/word?length=5
