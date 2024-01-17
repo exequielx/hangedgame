@@ -10,6 +10,7 @@ export const Game = ({ socketIo }) => {
   const [winner, setWinner] = useState();
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
+  
 
   useEffect(() => {
     if (!socketIo) { return; }
@@ -27,8 +28,10 @@ export const Game = ({ socketIo }) => {
     } 
       
   }
+   
 
   const onStart = () => {
+  
     setWinner(undefined)
     setIsStarting(true);
     socketIo.emit('start');
@@ -37,9 +40,9 @@ export const Game = ({ socketIo }) => {
     }, 3000);
   }
 
-  if (!socketIo) { return <div className={styles.loader} >  </div>; }
+  if (!socketIo) { return <div className={styles.loader}></div>; }
 
-  if (isStarting) { return <div className={styles.loader}   >   </div> }
+  if (isStarting) { return <div className={styles.loader}></div> }
 
   if (!word) {
     return (
@@ -50,6 +53,7 @@ export const Game = ({ socketIo }) => {
     );
   }
 
+  const colorKey = (socketIo.id == turn)
   return (
     <div className={styles.centerbox}>
       <Board word={word} />
@@ -59,7 +63,7 @@ export const Game = ({ socketIo }) => {
                   <button onClick={onStart}>volver a jugar</button>
 
                 </div>}
-      {!winner && <Keyboard onChange={onChangeLetter} />}
+      {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey}/>}
       <Players data={players} turn={turn} />
     </div>
   );

@@ -6,9 +6,8 @@ modificar quien juega
 
 timer cuando player juega
 
-pantalla victoria 
 
-mansaje derrota
+
 
 estadisticas
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Player from './Player';
-import classes from '@/styles/PlayerList.module.css'
+import classes from '@/styles/PlayerList.module.css';
 
 const Players = ({ data, turn }) => {
   return (

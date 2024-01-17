@@ -8,7 +8,7 @@ const keyboardLayout = [
   ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
 ];
 
-const Keyboard = ({ onChange }) => {
+const Keyboard = ({ onChange,colorKey }) => {
   return (
     <div className='key-board'>
       {
@@ -16,7 +16,7 @@ const Keyboard = ({ onChange }) => {
           <div key={letterIndex} className={classes.rowKeyBoard}>
             {
               colection.map(element => (
-                <Key key={element} onChange={onChange} className={classes.letter}>{element}</Key>
+                <Key key={element} onChange={onChange} colorKey={colorKey} >{element}</Key>
               ))
             }
           </div>
