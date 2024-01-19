@@ -39,7 +39,7 @@ export const Game = ({ socketIo }) => {
   const onStart = () => {
     setWinner(undefined)
     setIsStarting(true);
-    socketIo.emit('start', namePlayer);
+    socketIo.emit('start');
     setTimeout(() => {
       setIsStarting(false);
     }, 3000);
@@ -53,6 +53,8 @@ export const Game = ({ socketIo }) => {
 
   if (isStarting) { return <div className={styles.loader}></div> }
 
+
+  //cambiar por un componente y dinamizar con p`rops
   if (!word) {
     return (
       <div className={styles.centerbox}>
