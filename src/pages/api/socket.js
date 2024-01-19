@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 
+const playersData = [];
 
 let finalWord = '';
 const data = {
@@ -16,10 +17,20 @@ const SocketHandler = async (req, res) => {
     res.socket.server.io = io;
     io.on('connection', (socket) => {
       console.log('cliente conectado: ' + socket.id);
-      socket.on('start', () => { startGame(); });
-      socket.on('play', (letter) => { play(letter); });
+      socket.on('start', (namePlayer) => {
+        playersData[socket.id] = { name: namePlayer, id: socket.id };
+        data.players.push( playersData[socket.id]);
+        startGame();
+      });
 
-      data.players.push({ name: socket.id, id: socket.id });
+      socket.on('play', (letter) => { play(letter); });
+      socket.on('newPlayer', (namePlayer) => {
+        playersData[socket.id] = { name: namePlayer, id: socket.id };
+        data.players.push( playersData[socket.id]);
+        updateClients();
+      });
+
+      
       updateClients();
 
       socket.on('disconnect', () => {

@@ -10,6 +10,12 @@ export const Game = ({ socketIo }) => {
   const [winner, setWinner] = useState();
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const[namePlayer, setNamePlayer] = useState('');
+
+  const onChangePlayerName = (e) => {
+    setNamePlayer(e.target.value);
+  }
   
 
   useEffect(() => {
@@ -31,14 +37,17 @@ export const Game = ({ socketIo }) => {
    
 
   const onStart = () => {
-  
     setWinner(undefined)
     setIsStarting(true);
-    socketIo.emit('start');
+    socketIo.emit('start', namePlayer);
     setTimeout(() => {
       setIsStarting(false);
     }, 3000);
   }
+  const onSubmitPlayerName = () => {
+    socketIo.emit('newPlayer', namePlayer);
+  }
+
 
   if (!socketIo) { return <div className={styles.loader}></div>; }
 
@@ -47,7 +56,19 @@ export const Game = ({ socketIo }) => {
   if (!word) {
     return (
       <div className={styles.centerbox}>
-        <button style={{ padding: 10 }} onClick={onStart}>Start Game</button>
+        <label>Ingresa tu nombre</label>
+        <input type="text" onChange={onChangePlayerName} /> 
+        <button style={{ padding: 10 }} onClick={() => {onStart(); setIsPlaying(true);}}>Start Game</button>
+        <Players data={players} />
+      </div>
+    );
+  }
+  if (!isPlaying ) {
+    return (
+      <div className={styles.centerbox}>
+        <label>Ingresa tu nombre</label>
+        <input type="text" onChange={onChangePlayerName} /> 
+        <button style={{ padding: 10 }} onClick={() => {onSubmitPlayerName(); setIsPlaying(true);}}>Start Game</button>
         <Players data={players} />
       </div>
     );
@@ -59,7 +80,7 @@ export const Game = ({ socketIo }) => {
       <Board word={word} />
       {winner &&
                 <div className={styles.WinnerBox}>
-                   yeeeah ganó {turn}!!!
+                   yeeeah ganó {namePlayer}!!!
                   <button onClick={onStart}>volver a jugar</button>
 
                 </div>}
