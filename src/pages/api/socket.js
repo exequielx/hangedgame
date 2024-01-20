@@ -22,23 +22,16 @@ const SocketHandler = async (req, res) => {
     io.on('connection', (socket) => {
       console.log('cliente conectado: ' + socket.id);
 
-      //solo debe iniciar el juego 
-      socket.on('start', (namePlayer) => {
-        playersData[socket.id] = { name: namePlayer, id: socket.id, points: 6, life: 5};
-        data.players.push( playersData[socket.id]);
-        startGame();
-      });
+      socket.on('start', () => { startGame();});
 
       socket.on('play', (letter)=> { play(letter); });
-// todos los jugadiores entran por newPlayer
 
-      socket.on('newPlayer', (namePlayer) => {
-        playersData[socket.id] = { name: namePlayer, id: socket.id, points: 6, life: 5};
+      socket.on('newPlayer', (namePlayer, admin) => {
+        playersData[socket.id] = { name: namePlayer, id: socket.id, points: 6, life: 5, admin: admin ||false};
         data.players.push( playersData[socket.id]);
         updateClients();
       });
-
-      
+ 
       updateClients();
 
       socket.on('disconnect', () => {
@@ -69,7 +62,7 @@ const play = (letter) => {
 
 const checkWinner = () => {
   if (data.word.indexOf('-') === -1) {
-    data.winner = data.turn;
+    data.winner = data.players.filter(r => r.id === data.turn);
     return true;
   }
   return false;
@@ -86,7 +79,7 @@ const generateRandomWord = async () => {
   word = word[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
   finalWord = word;
   data.word = '-'.repeat(finalWord.length);
-  console.log(data.word)
+  console.log(word);
 }
 
 const generateRandomPlayerTurn = () => {
@@ -94,6 +87,7 @@ const generateRandomPlayerTurn = () => {
 }
 
 const updateClients = () => {
+  console.log(data);
   io.emit('updategame', data);
 }
 

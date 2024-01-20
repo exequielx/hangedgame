@@ -3,6 +3,9 @@ import Board from './components/board/Board';
 import Keyboard from './components/keyboard/Keyboard';
 import Players from './components/players/Players';
 import styles from '@/styles/Game.module.css'
+import { Lobby } from './components/lobby/Lobby';
+import { Loggin } from './components/loggin/Loggin';
+import { Winner } from './components/winner/winner';
 
 export const Game = ({ socketIo }) => {
   const [players, setPlayers] = useState([]);
@@ -11,12 +14,13 @@ export const Game = ({ socketIo }) => {
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const[namePlayer, setNamePlayer] = useState('');
+  const [namePlayer, setNamePlayer] = useState('');
+  const [admin, setAdmin] = useState(false);
+  const [isLoggin, setIsLoggin] = useState(true);
 
   const onChangePlayerName = (e) => {
     setNamePlayer(e.target.value);
   }
-  
 
   useEffect(() => {
     if (!socketIo) { return; }
@@ -29,12 +33,11 @@ export const Game = ({ socketIo }) => {
   }, [socketIo]);
 
   const onChangeLetter = (letter) => {
-    if(socketIo.id == turn){
+    if (socketIo.id == turn) {
       socketIo.emit('play', letter);
-    } 
-      
+    }
+
   }
-   
 
   const onStart = () => {
     setWinner(undefined)
@@ -44,49 +47,45 @@ export const Game = ({ socketIo }) => {
       setIsStarting(false);
     }, 3000);
   }
-  const onSubmitPlayerName = () => {
-    socketIo.emit('newPlayer', namePlayer);
+  const onSubmitPlayerName = (admin) => {
+    socketIo.emit('newPlayer', namePlayer, admin);
   }
 
-
-  if (!socketIo) { return <div className={styles.loader}></div>; }
-
-  if (isStarting) { return <div className={styles.loader}></div> }
-
-
-  //cambiar por un componente y dinamizar con p`rops
-  if (!word) {
-    return (
-      <div className={styles.centerbox}>
-        <label>Ingresa tu nombre</label>
-        <input type="text" onChange={onChangePlayerName} /> 
-        <button style={{ padding: 10 }} onClick={() => {onStart(); setIsPlaying(true);}}>Start Game</button>
-        <Players data={players} />
-      </div>
-    );
+  const firstPlayer = () => {
+    onStart();
+    setIsPlaying(true);
+    onSubmitPlayerName(true);
   }
-  if (!isPlaying ) {
-    return (
-      <div className={styles.centerbox}>
-        <label>Ingresa tu nombre</label>
-        <input type="text" onChange={onChangePlayerName} /> 
-        <button style={{ padding: 10 }} onClick={() => {onSubmitPlayerName(); setIsPlaying(true);}}>Start Game</button>
-        <Players data={players} />
-      </div>
-    );
+  const secondsPlayers = () => {
+    onSubmitPlayerName(false);
+    setIsPlaying(true);
   }
+  const onLoggin = () => {
+    
+
+  }
+
+  const intro = () => {
+    if (!socketIo || isStarting) return <div className={styles.loader}></div>;
+    if (!word) return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />;
+    if (!isPlaying) return <Loggin players={players} buttonFunction={secondsPlayers} onChangePlayerName={onChangePlayerName} />;
+
+  }
+  
+
+
+
+  intro();
+
 
   const colorKey = (socketIo.id == turn)
   return (
     <div className={styles.centerbox}>
       <Board word={word} />
       {winner &&
-                <div className={styles.WinnerBox}>
-                   yeeeah ganó {namePlayer}!!!
-                  <button onClick={onStart}>volver a jugar</button>
-
-                </div>}
-      {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey}/>}
+        <Winner winner={winner[0]?.name} onStart={onStart} />
+      }
+      {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey} />}
       <Players data={players} turn={turn} />
     </div>
   );
