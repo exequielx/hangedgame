@@ -60,23 +60,10 @@ export const Game = ({ socketIo }) => {
     onSubmitPlayerName(false);
     setIsPlaying(true);
   }
-  const onLoggin = () => {
-    
 
-  }
-
-  const intro = () => {
     if (!socketIo || isStarting) return <div className={styles.loader}></div>;
     if (!word) return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />;
     if (!isPlaying) return <Loggin players={players} buttonFunction={secondsPlayers} onChangePlayerName={onChangePlayerName} />;
-
-  }
-  
-
-
-
-  intro();
-
 
   const colorKey = (socketIo.id == turn)
   return (
