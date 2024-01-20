@@ -26,4 +26,8 @@ body {
   justify-content: center;
 }
 
-
+#_netx{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Board from './components/board/Board';
 import Keyboard from './components/keyboard/Keyboard';
 import Players from './components/players/Players';
+import styles from '@/styles/Game.module.css'
+import { Lobby } from './components/lobby/Lobby';
+import { Loggin } from './components/loggin/Loggin';
+import { Winner } from './components/winner/winner';
 
 export const Game = ({ socketIo }) => {
   const [players, setPlayers] = useState([]);
@@ -9,6 +13,14 @@ export const Game = ({ socketIo }) => {
   const [winner, setWinner] = useState();
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [namePlayer, setNamePlayer] = useState('');
+  const [admin, setAdmin] = useState(false);
+  const [isLoggin, setIsLoggin] = useState(true);
+
+  const onChangePlayerName = (e) => {
+    setNamePlayer(e.target.value);
+  }
 
   useEffect(() => {
     if (!socketIo) { return; }
@@ -21,35 +33,59 @@ export const Game = ({ socketIo }) => {
   }, [socketIo]);
 
   const onChangeLetter = (letter) => {
-    socketIo.emit('play', letter);
+    if (socketIo.id == turn) {
+      socketIo.emit('play', letter);
+    }
+
   }
 
   const onStart = () => {
+    setWinner(undefined)
     setIsStarting(true);
     socketIo.emit('start');
     setTimeout(() => {
       setIsStarting(false);
     }, 3000);
   }
-
-  if (!socketIo) { return 'loading...'; }
-
-  if (isStarting) { return 'starting game...'; }
-
-  if (!word) {
-    return (
-      <div>
-        <button style={{ padding: 10 }} onClick={onStart}>Start Game</button>
-        <Players data={players} />
-      </div>
-    );
+  const onSubmitPlayerName = (admin) => {
+    socketIo.emit('newPlayer', namePlayer, admin);
   }
 
+  const firstPlayer = () => {
+    onStart();
+    setIsPlaying(true);
+    onSubmitPlayerName(true);
+  }
+  const secondsPlayers = () => {
+    onSubmitPlayerName(false);
+    setIsPlaying(true);
+  }
+  const onLoggin = () => {
+    
+
+  }
+
+  const intro = () => {
+    if (!socketIo || isStarting) return <div className={styles.loader}></div>;
+    if (!word) return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />;
+    if (!isPlaying) return <Loggin players={players} buttonFunction={secondsPlayers} onChangePlayerName={onChangePlayerName} />;
+
+  }
+  
+
+
+
+  intro();
+
+
+  const colorKey = (socketIo.id == turn)
   return (
-    <div>
+    <div className={styles.centerbox}>
       <Board word={word} />
-      {winner && <div>yeeeah ganó {turn}!!!</div>}
-      {!winner && <Keyboard onChange={onChangeLetter} />}
+      {winner &&
+        <Winner winner={winner[0]?.name} onStart={onStart} />
+      }
+      {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey} />}
       <Players data={players} turn={turn} />
     </div>
   );
