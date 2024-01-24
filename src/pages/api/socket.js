@@ -28,7 +28,7 @@ const SocketHandler = async (req, res) => {
 
       socket.on('play', (letter) => { play(letter); });
 
-      socket.on('exitLobby', () => {
+     socket.on('exitLobby', () => {
         data.lobby = false;
         updateClients();
       });

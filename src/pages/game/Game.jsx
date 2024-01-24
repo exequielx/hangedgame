@@ -56,13 +56,6 @@ export const Game = ({ socketIo }) => {
     socketIo.emit('newPlayer', namePlayer, admin);
   }
 
-  const exitLobby = () => {
-    socketIo.emit('exitLobby');
-  }
-
-  const kickear = (id) => {
-    socketIo.emit('kickPlayer', id);
-  }
 
   const firstPlayer = () => {
     onStart();
@@ -79,9 +72,16 @@ export const Game = ({ socketIo }) => {
 
   //ingreso players
   if (!word) return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />;
+  
   if (!isPlaying) return <Loggin players={players} buttonFunction={secondsPlayers} onChangePlayerName={onChangePlayerName} />;
 
+  const exitLobby = () => {
+    socketIo.emit('exitLobby');
+  }
 
+  const kickear = (id) => {
+    socketIo.emit('kickPlayer', id);
+  }
 
   //lobby
   console.log(isLobby)
