@@ -7,7 +7,7 @@ export const Loggin = ({players, buttonFunction, onChangePlayerName}) => {
     <div className={styles.centerbox}>
         <label>Ingresa tu nombre</label>
         <input type="text" onChange={onChangePlayerName} /> 
-        <button style={{ padding: 10 }} onClick={buttonFunction}>Start Game</button>
+        <button style={{ padding: 10 }} onClick={buttonFunction} >ir al lobby</button>
 
         <Players data={players} />
     </div>

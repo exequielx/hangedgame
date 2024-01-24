@@ -12,6 +12,8 @@ const data = {
   players: [],
   winner: null,
   turn: null,
+  lobby: true,
+  kickPlayers: []
 };
 
 let io; //socket io global ref
@@ -22,16 +24,28 @@ const SocketHandler = async (req, res) => {
     io.on('connection', (socket) => {
       console.log('cliente conectado: ' + socket.id);
 
-      socket.on('start', () => { startGame();});
+      socket.on('start', () => { startGame(); });
 
-      socket.on('play', (letter)=> { play(letter); });
+      socket.on('play', (letter) => { play(letter); });
 
-      socket.on('newPlayer', (namePlayer, admin) => {
-        playersData[socket.id] = { name: namePlayer, id: socket.id, points: 6, life: 5, admin: admin ||false};
-        data.players.push( playersData[socket.id]);
+      socket.on('exitLobby', () => {
+        data.lobby = false;
         updateClients();
       });
- 
+
+      socket.on('kickPlayer', (id) => {
+        data.players = data.players.filter(r => r.id !== id);
+        data.kickPlayers.push(id);
+        updateClients();
+      });
+
+
+      socket.on('newPlayer', (namePlayer, admin) => {
+        playersData[socket.id] = { name: namePlayer, id: socket.id, points: 6, life: 5, admin: admin || false };
+        data.players.push(playersData[socket.id]);
+        updateClients();
+      });
+
       updateClients();
 
       socket.on('disconnect', () => {
@@ -47,14 +61,14 @@ const SocketHandler = async (req, res) => {
 const startGame = async () => {
   await generateRandomWord();
   generateRandomPlayerTurn();
-  data.winner=null;
+  data.winner = null;
   updateClients();
 }
 
 const play = (letter) => {
   finalWord.includes(letter) ? data.players.find(r => r.id === data.turn).points += 1 : data.players.find(r => r.id === data.turn).life -= 1
   data.word = finalWord.split('').map((c, i) => ((c === letter || (data.word[i] !== '-')) ? c : '-')).join('');
-  if(!checkWinner()) {
+  if (!checkWinner()) {
     setNextTurn();
   }
   updateClients();

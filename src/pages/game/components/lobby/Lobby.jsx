@@ -1,15 +1,16 @@
 import React from 'react'
+import { ListLobby } from './ListLobby';
+import { AdminLobby } from './AdminLobby';
 
-export const Lobby = (data) => {
+export const Lobby = ({ players, admin, exitLobby, kickear }) => {
+  const playerNames = players?.map(player => player.name);
+  console.log(players)
+  if (!admin) return <ListLobby playerNames={playerNames} />
+
   return (
-    <ul>      
-        {
-            data?.map((player, colIndex) => (
-                <li  key={colIndex} >
-                    {player} 
-                </li> 
-            ))
-        }
-    </ul>  
+    <div>
+      <AdminLobby players={players} kickear={kickear} exitLobby={exitLobby} />
+
+    </div>
   )
 }
