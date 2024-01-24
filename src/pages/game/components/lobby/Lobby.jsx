@@ -10,7 +10,7 @@ export const Lobby = ({ players, admin, exitLobby, kickear }) => {
   return (
     <div>
       <AdminLobby players={players} kickear={kickear} exitLobby={exitLobby} />
-
+      <button onClick={exitLobby}>Empezar a jugar</button>
     </div>
   )
 }

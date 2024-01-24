@@ -9,7 +9,7 @@ import { Winner } from './components/winner/winner';
 
 export const Game = ({ socketIo }) => {
   const [players, setPlayers] = useState([]);
-  const [word, setWord] = useState();
+  const [word, setWord] = useState("");
   const [winner, setWinner] = useState();
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);

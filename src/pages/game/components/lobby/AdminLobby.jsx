@@ -13,7 +13,8 @@ export const AdminLobby = ({ players, kickear, exitLobby }) => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => exitLobby()}>Empezar a jugar</button>
+            <button onClick={exitLobby}>Empezar a jugar</button>
+
         </div>
     );
 };
