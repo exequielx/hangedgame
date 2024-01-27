@@ -89,13 +89,13 @@ export const Game = ({ socketIo }) => {
     <div className={styles.container}>
       <div className={styles.centerbox}>
         <Board word={word} />
-        {/* {winner &&
-          <Winner winner={winner[0]?.name} onStart={onStart} />
-        } */}
+        {
+          winner && <Winner winner={winner[0]?.name} onStart={onStart} />
+        }
         {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey} />}
         <Players data={players} turn={turn} />
       </div>
-      <button onClick={onStart()} >resetear game </button>
+      <button onClick={onStart} >resetear game </button>
     </div>
   );
 };
