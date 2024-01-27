@@ -13,7 +13,6 @@ export const Game = ({ socketIo }) => {
   const [winner, setWinner] = useState();
   const [turn, setTurn] = useState();
   const [isStarting, setIsStarting] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [namePlayer, setNamePlayer] = useState('');
   const [admin, setAdmin] = useState(false);
   const [isLobby, setIsLobby] = useState(true);
@@ -25,7 +24,7 @@ export const Game = ({ socketIo }) => {
 
   useEffect(() => {
     if (!socketIo) { return; }
-
+    console.log("!!!!!")
     socketIo.on('updategame', (data) => {
       setWinner(data.winner);
       setWord(data.word);
@@ -42,7 +41,7 @@ export const Game = ({ socketIo }) => {
   }
 
   const onStart = () => {
-    setWinner(undefined);
+    setWinner(false);
     setIsStarting(true);
     socketIo.emit('start');
     setTimeout(() => {
@@ -58,22 +57,19 @@ export const Game = ({ socketIo }) => {
 
 
   const firstPlayer = () => {
-    onStart();
-    setAdmin(true)
-    setIsPlaying(true);
-    onSubmitPlayerName(true);
+    const isAdmin = namePlayer === 'admin';
+    setAdmin(isAdmin)
+    onSubmitPlayerName(isAdmin);
   }
-  const secondsPlayers = () => {
-    onSubmitPlayerName(false);
-    setIsPlaying(true);
-  }
+
   //loader socketIo
   if (!socketIo || isStarting) return <div className={styles.loader}></div>;
 
-  //ingreso players
-  if (!word) return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />;
-  
-  if (!isPlaying) return <Loggin players={players} buttonFunction={secondsPlayers} onChangePlayerName={onChangePlayerName} />;
+
+  if (!namePlayer || !players?.find(r => r.name === namePlayer)) {
+    return <Loggin players={players} buttonFunction={firstPlayer} onChangePlayerName={onChangePlayerName} />
+  }
+
 
   const exitLobby = () => {
     socketIo.emit('exitLobby');
@@ -84,20 +80,18 @@ export const Game = ({ socketIo }) => {
   }
 
   //lobby
-  console.log(isLobby)
   if (isLobby) {
     return <Lobby players={players} admin={admin} exitLobby={exitLobby} kickear={kickear} />;
   }
-
 
   const colorKey = (socketIo.id == turn)
   return (
     <div className={styles.container}>
       <div className={styles.centerbox}>
         <Board word={word} />
-        {winner &&
+        {/* {winner &&
           <Winner winner={winner[0]?.name} onStart={onStart} />
-        }
+        } */}
         {!winner && <Keyboard onChange={onChangeLetter} colorKey={colorKey} />}
         <Players data={players} turn={turn} />
       </div>

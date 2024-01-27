@@ -101,7 +101,6 @@ const generateRandomPlayerTurn = () => {
 }
 
 const updateClients = () => {
-  console.log(data);
   io.emit('updategame', data);
 }
 
